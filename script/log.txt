@@ -1,4 +1,5 @@
-text: For this task, you will deal with ratings given by users to movies (films) that they have seen. A rating is a vote from 1 to 5 based on how much the user liked the movie and recommends it to other users. Create a function `get_recommendations` which will take as arguments three dataframes: a name for the user, the release year, and the recommendation method. The function returns the title of the most highly recommended movie for the given user.
+Kos is a good fella
+@@text: For this task, you will deal with ratings given by users to movies (films) that they have seen. A rating is a vote from 1 to 5 based on how much the user liked the movie and recommends it to other users. Create a function `get_recommendations` which will take as arguments three dataframes: a name for the user, the release year, and the recommendation method. The function returns the title of the most highly recommended movie for the given user.
 
 The function `get_recommendations` takes as arguments three dataframes: `users`, `movies` and `ratings`, with the following structure:
 
