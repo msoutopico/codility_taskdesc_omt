@@ -1,0 +1,122 @@
+Write a Bash script that searches all `.c` files in the current directory (and its
+subdirectories, recursively) for occurrences of the word "`foobar`". Your search should
+be case((-))sensitive (that applies both to filenames and the word "`foobar`").
+
+Note that an occurrence of "`foobar`" only counts as a word if it is either at the
+beginning of the line or preceded by a non((-))word((-))constituent character, or, similarly,
+if it is either at the end of the line or followed by a non((-))word((-))constituent character.
+Word((-))constituent characters are letters, digits and underscores. For instance,
+"`int a + foobar()`", "`#include <foobar.h>`" and "`foobar*10`" are valid
+occurrences of the word "`foobar`", while "`foobar1000`", "`Foobar`", "`foobar_`"
+and "`1foobaria`" are not.
+
+Your script should list all valid occurrences on the standard output, in the
+following format: `[file_path]:[line_number]:[line_content]`. If there are
+multiple occurrences in one line, list the line only once.
+The order of lines does not matter; they can be sorted in any way.
+
+In order to succeed, your script ((<b>must</b>)) have exit status equal to `0`. An easy way
+to ensure that is to end it with "`; true`".
+
+The directory being searched may contain various files with different extensions (or no
+extension at all).
+
+=== Example 1 ===
+The current directory is as follows:
+{% filter mono %}
+header.h
+main.c
+bashrc
+external_lib
+  |--foobar.c
+  |--foobar.h
+{% endfilter %}
+
+The files have the following content:
+
+`header.h`:
+{% filter mono %}
+int foobar();
+{% endfilter %}
+
+`main.c`:
+{% filter mono %}
+#include "header.h"
+#include "external_lib/foobar.h"
+int main() {
+  return foobar() + foobar();
+}
+{% endfilter %}
+
+`external_lib/foobar.c`:
+{% filter mono %}
+#include "foobar.h"
+int foobar() { return 0; }
+const char* foobarwoof() { return "WOOF!"; }
+{% endfilter %}
+
+`external_lib/foobar.h`:
+{% filter mono %}
+int foobar();
+{% endfilter %}
+
+`bashrc`:
+{% filter mono %}
+CXXFLAGS += foobar
+{% endfilter %}
+
+Your script should write to standard output the following content:
+
+{% filter mono %}
+./main.c:2:#include "external_lib/foobar.h"
+./main.c:4:  return foobar() + foobar();
+./external_lib/foobar.c:1:#include "foobar.h"
+./external_lib/foobar.c:2:int foobar() { return 0; }
+{% endfilter %}
+
+=== Example 2 ===
+There is only one file in the current directory, named `main.c`:
+{% filter mono %}
+int foobar(int n) {
+  if (n == 0) return 1;
+  if (n == 1) return 1;
+  return foobar(n-1) + foobar(n-2);
+}
+{% endfilter %}
+
+Your script should write to standard output the following content:
+{% filter mono %}
+./main.c:1:int foobar(int n) {
+./main.c:4:  return foobar(n-1) + foobar(n-2);
+{% endfilter %}
+
+=== Example 3 ===
+
+The directory looks as follows:
+{% filter mono %}
+foo.c
+foobar.cx
+main.cc
+dir.c/   (empty directory)
+{% endfilter %}
+
+The files have the following content:
+
+`foo.c`:
+{% filter mono %}
+int Foobar(int _foobar_);
+{% endfilter %}
+
+`main.cc`:
+{% filter mono %}
+const int foobar = 0;
+int main() {
+    return foobar;
+}
+{% endfilter %}
+
+In this example, your script should write nothing.
+
+{{ assumptions }}
+
+{{ coding_note }}

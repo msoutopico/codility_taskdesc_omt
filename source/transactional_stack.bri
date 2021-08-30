@@ -1,0 +1,164 @@
+Write a class `Solution` that implements a stack data structure.
+The data structure will hold positive integers within the range [1..1,000,000,000]
+and should implement the following ''stack operations'':
+
+ * `push(value)`: Pushes an element `value` to the stack.
+
+ * `top()`: Returns the topmost element (without removing it from the stack), or 0 if the stack is empty.
+
+ * `pop()`: Removes the topmost element from the stack, or does nothing if the stack is empty.
+
+In addition to the above operations, the stack should also support ''transactions''
+by implementing the following operations:
+
+ * `begin()`: Opens a new transaction block.
+   Transaction blocks can be nested; a `begin()` can be issued inside another existing block.
+   Note that no transaction is in progress before the first `begin()` call.
+
+ * `rollback()`: Undoes every stack operation issued in the current transaction block,
+   and closes the block.
+   Returns {{ true_const }} if successful, or {{ false_const }} if no transaction is in progress.
+
+ * `commit()`: Applies every stack operation issued in the current transaction block,
+   and closes the block.
+   Returns {{ true_const }} if successful, or {{ false_const }} if no transaction is in progress.
+
+During the assessment of your program, a single test will execute N operations, where
+N is at most 100,000. During the assessment there can be more than one instance of class
+`Solution` working at the same time.
+
+Example tests:
+
+{% if prog_lang == 'py' %}
+{% filter mono %}
+    def example1():
+        sol = Solution()
+        sol.push(5)
+        sol.push(2)                    # stack: [5,2]
+        assert sol.top() == 2
+        sol.pop()                      # stack: [5]
+        assert sol.top() == 5
+
+        sol2 = Solution()
+        assert sol2.top() == 0         # top of an empty stack is 0
+        sol2.pop()                     # pop should do nothing
+
+    def example2():
+        sol = Solution()
+        sol.push(4)
+        sol.begin()                    # start transaction 1
+        sol.push(7)                    # stack: [4,7]
+        sol.begin()                    # start transaction 2
+        sol.push(2)                    # stack: [4,7,2]
+        assert sol.rollback() == True  # rollback transaction 2
+        assert sol.top() == 7          # stack: [4,7]
+        sol.begin()                    # start transaction 3
+        sol.push(10)                   # stack: [4,7,10]
+        assert sol.commit() == True    # transaction 3 is committed
+        assert sol.top() == 10
+        assert sol.rollback() == True  # rollback transaction 1
+        assert sol.top() == 4          # stack: [4]
+        assert sol.commit() == False   # there is no open transaction
+{% endfilter %}
+{% elif prog_lang == 'cpp' %}
+{% filter mono %}
+    void example1() {
+        Solution sol;
+        sol.push(5);
+        sol.push(2);                    // stack: [5,2]
+        assert(sol.top() == 2);
+        sol.pop();                      // stack: [5]
+        assert(sol.top() == 5);
+
+        Solution sol2;
+        assert(sol2.top() == 0);        // top of an empty stack is 0
+        sol2.pop();                     // pop should do nothing
+    }
+
+    void example2() {
+        Solution sol;
+        sol.push(4);
+        sol.begin();                    // start transaction 1
+        sol.push(7);                    // stack: [4,7]
+        sol.begin();                    // start transaction 2
+        sol.push(2);                    // stack: [4,7,2]
+        assert(sol.rollback() == true); // rollback transaction 2
+        assert(sol.top() == 7);         // stack: [4,7]
+        sol.begin();                    // start transaction 3
+        sol.push(10);                   // stack: [4,7,10]
+        assert(sol.commit() == true);   // transaction 3 is committed
+        assert(sol.top() == 10);
+        assert(sol.rollback() == true); // rollback transaction 1
+        assert(sol.top() == 4);         // stack: [4]
+        assert(sol.commit() == false);  // there is no open transaction
+    }
+{% endfilter %}
+{% elif prog_lang == 'java' %}
+{% filter mono %}
+    public static void example1() {
+        Solution sol = new Solution();
+        sol.push(5);
+        sol.push(2);                    // stack: [5,2]
+        assert sol.top() == 2;
+        sol.pop();                      // stack: [5]
+        assert sol.top() == 5;
+
+        Solution sol2 = new Solution();
+        assert sol2.top() == 0;         // top of an empty stack is 0
+        sol2.pop();                     // pop should do nothing
+    }
+
+    public static void example2() {
+        Solution sol = new Solution();
+        sol.push(4);
+        sol.begin();                    // start transaction 1
+        sol.push(7);                    // stack: [4,7]
+        sol.begin();                    // start transaction 2
+        sol.push(2);                    // stack: [4,7,2]
+        assert sol.rollback() == true;  // rollback transaction 2
+        assert sol.top() == 7;          // stack: [4,7]
+        sol.begin();                    // start transaction 3
+        sol.push(10);                   // stack: [4,7,10]
+        assert sol.commit() == true;    // transaction 3 is committed
+        assert sol.top() == 10;
+        assert sol.rollback() == true;  // rollback transaction 1
+        assert sol.top() == 4;          // stack: [4]
+        assert sol.commit() == false;   // there is no open transaction
+    }
+{% endfilter %}
+{% elif prog_lang == 'cs' %}
+{% filter mono %}
+    public static void example1() {
+        Solution sol = new Solution();
+        sol.push(5);
+        sol.push(2);                    // stack: [5,2]
+        Contract.Assert(sol.top() == 2);
+        sol.pop();                      // stack: [5]
+        Contract.Assert(sol.top() == 5);
+
+        Solution sol2 = new Solution();
+        Contract.Assert(sol2.top() == 0);        // top of an empty stack is 0
+        sol2.pop();                     // pop should do nothing
+    }
+
+    public static void example2() {
+        Solution sol = new Solution();
+        sol.push(4);
+        sol.begin();                     // start transaction 1
+        sol.push(7);                     // stack: [4,7]
+        sol.begin();                     // start transaction 2
+        sol.push(2);                     // stack: [4,7,2]
+        Contract.Assert(sol.rollback() == true);  // rollback transaction 2
+        Contract.Assert(sol.top() == 7);          // stack: [4,7]
+        sol.begin();                     // start transaction 3
+        sol.push(10);                    // stack: [4,7,10]
+        Contract.Assert(sol.commit() == true);    // transaction 3 is committed
+        Contract.Assert(sol.top() == 10);
+        Contract.Assert(sol.rollback() == true);  // rollback transaction 1
+        Contract.Assert(sol.top() == 4;           // stack: [4]
+        Contract.Assert(sol.commit() == false);   // there is no open transaction
+    }
+{% endfilter %}
+{% endif %}
+
+{{ assumptions_complexity }}

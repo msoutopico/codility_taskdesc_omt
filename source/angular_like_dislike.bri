@@ -1,0 +1,63 @@
+Using Angular (v4), create a Like/Dislike component for news articles. Export the component as "LikeDislikeComponent" (`export class LikeDislikeComponent`).
+
+=== Requirements: ===
+
+  ((<u>))1. Add a like button:((</u>))
+
+    * The content of the like button should be in the following format: "Like | 100", where 100 is the total number of likes.
+    * It should have a `"like-button"` class.
+    * Wrap the number of likes in a span with a `"likes-counter"` class.
+    * The initial number of likes in the counter should be 100.
+
+  ((<u>))2. Add a dislike button:((</u>))
+
+    * The content of the dislike button should be in the following format: "Dislike | 25", where 25 is the total number of dislikes.
+    * It should have a `"dislike-button"` class.
+    * Wrap the number of dislikes in a span with a `"dislikes-counter"` class.
+    * The initial number of dislikes in the counter should be 25.
+
+  ((<u>))3. Users can like an article, by clicking the like button:((</u>))
+
+    * Number of likes should increase by one.
+    * Like button should have `"liked"` class in addition to the `"like-button"` class.
+
+  ((<u>))4. Users can dislike an article, by clicking the dislike button:((</u>))
+
+    * Number of dislikes should increase by one.
+    * Dislike button should have `"disliked"` class in addition to the `"dislike-button"` class.
+
+  ((<u>))5. Users can cancel their like by clicking again on the like button:((</u>))
+
+    * Like counter should decrease by one.
+    * `"liked"` class should be removed from the like button.
+
+  ((<u>))6. Users can cancel their dislike by clicking again on the dislike button:((</u>))
+
+    * Dislike counter should decrease by one.
+    * `"disliked"` class should be removed.
+
+  ((<u>))7. Disliking an already liked article cancels the like:((</u>))
+
+    * Like counter should decrease by one.
+    * `"liked"` class should be removed from the like button.
+    * Note that this is in addition to the steps mentioned in the fourth point.
+
+  ((<u>))8. Liking an already disliked article cancels the dislike:((</u>))
+
+    * Dislike counter should decrease by one.
+    * `"disliked"` class should be removed from the dislike button.
+    * Note that this is in addition to the steps mentioned in the third point.
+
+
+=== Assessment: ===
+
+    * Use the animation below as a reference for your solution.
+    * "Preview" tab will display your component. You can use it for testing purposes.
+    * Design / styling is not assessed and will not affect the score. You should focus only on implementing the requirements.
+
+[[BR]]
+
+{% filter video %}
+&alt Animated component;
+angular_like_dislike
+{% endfilter %}

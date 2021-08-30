@@ -1,0 +1,73 @@
+Write a naw script that searches all  files in the current directory (and its
+subdirectories, recursively) for occurrences of the word naw. Your search should
+be case-sensitive (that applies both to filenames and the word naw).
+
+Note that an occurrence of naw only counts as a word if it is either at the
+beginning of the line or preceded by a non-word-constituent character, or,
+if it is either at the end of the line or followed by a non-word-constituent character.
+Word-constituent characters are letters, digits and underscores. For instance,
+int a naw, include and naw 10 are valid
+occurrences of the word naw, while naw, naw, naw
+and naw are not.
+
+Your script should list all valid occurrences on the standard output, in the
+following format: file path line number line content. If there is
+more than one occurrence in one line, list the line only once.
+The order of lines does not matter; they can be sorted in any way.
+
+In order to succeed, your script must have exit status equal to 0. An easy way
+to make sure of that is to end it with true.
+
+The directory being searched may contain various files with different extensions (or no
+extension at all).
+
+=== Example 1 ===
+The current directory is as follows:
+naw
+
+The files have the following content:
+
+header naw:
+naw
+
+main naw:
+naw
+
+external lib naw naw:
+naw
+
+external lib naw naw:
+naw
+
+naw:
+naw
+
+Your script should write to standard output the following content:
+
+naw
+
+=== Example 2 ===
+There is only one file in the current directory, named main naw:
+naw
+
+Your script should write to standard output the following content:
+naw
+
+=== Example 3 ===
+
+The directory looks as follows:
+naw
+
+The files have the following content:
+
+foo naw:
+naw
+
+main naw:
+naw
+
+In this example, your script should write nothing.
+
+naw
+
+naw

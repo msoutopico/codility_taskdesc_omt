@@ -1,0 +1,446 @@
+text: For this task, you will deal with ratings given by users to movies (films) that they have seen. A rating is a vote from 1 to 5 based on how much the user liked the movie and recommends it to other users. Create a function `get_recommendations` which will take as arguments three dataframes: a name for the user, the release year, and the recommendation method. The function returns the title of the most highly recommended movie for the given user.
+
+The function `get_recommendations` takes as arguments three dataframes: `users`, `movies` and `ratings`, with the following structure:
+
+- `users` – information about users with the columns: `user id`, `full name`, `age`, `gender` and `zip code`.
+- `ratings` – information about movie ratings by users (only one movie's rating per user) with the columns: `user id`, `item id`, `rating` and `timestamp`.
+- `movies` – information about movies with the columns: `movie id` (should match `item_id` from `ratings`), `movie title` and `release year`.
+
+The next three arguments are: `full name`, `year` and `method`.
+`Full name` is the full name of the user for whom we want to return one recommended movie whose release year is equal to `year` using one of the three `method`s:
+- By `method=by_popularity` return the movie title with the most ratings.
+- By `method=by_rating` return the movie title with the highest average rating.
+- By `method=by_similar_users` return the movie title with the latest rating (timestamp) among a group of similar users to a given user. A group of similar users are users who have seen at least one movie that the given user has seen. Also, the maximum difference between their rating and the given user's rating of the same movie is 1 (for every movie they have both seen). You can use function `check_similar_users` or create your own.
+   The `check_similar_users` function returns True if users with ids: `users_id_x`, `user_id_y` are similar based on ratings dataframe and False otherwise.
+
+All methods should return a movie title that has not been rated by the given user.
+
+It can happen that more than one movie meets the condition. For example, several movies have the same highest average rating in `method=by_rating`). In such a case, the function should return the first movie in alphabetical order.
+
+For the cases listed below the function should return an empty string:
+- given `full name` or a `year` does not exist in the given data.
+- incorrect `method` argument.
+- after applying year filtering all movies are already rated by the user.
+- there doesn't exist any user similar to the user.
+
+### Packages versions
+You can use the following package besides the Python 3.8 standard library:
+- pandas 0.25.3
+
+
+### Examples
+
+For the example dataframes displayed below:
+
+```
+|user id |full name      |age |gender |zip code |
+|--------|---------------|----|-------|---------|
+|1       |Ryan James     |24  |M      |85711    |
+|2       |Alice Graves   |53  |F      |94043    |
+|3       |Ambrose Smith  |23  |M      |32067    |
+|4       |Bobby Alvarez  |24  |M      |90412    |
+|5       |Latosha Jiles  |53  |F      |15343    |
+|6       |Louis Mcmillen |23  |M      |74920    |
+```
+
+```
+|user id |item id |rating |timestamp |
+|--------|--------|-------|----------|
+|2       |1       |1      |881250949 |
+|3       |1       |2      |891717742 |
+|4       |1       |2      |878887116 |
+|5       |1       |3      |894528467 |
+|3       |2       |5      |886397596 |
+|4       |2       |4      |884182806 |
+|1       |3       |2      |881171488 |
+|2       |3       |2      |891628467 |
+|1       |4       |5      |886324817 |
+|2       |4       |3      |883603013 |
+|1       |5       |5      |879372434 |
+|3       |5       |5      |879781125 |
+|3       |4       |4      |876042340 |
+|4       |4       |5      |891035994 |
+|4       |5       |5      |898603000 |
+|2       |5       |5      |904528467 |
+|4       |6       |4      |894528467 |
+```
+
+```
+|movie id |movie title             |release year |
+|---------|------------------------|-------------|
+|1        |Toy Story (1995)        |1995         |
+|2        |GoldenEye (1995)        |1995         |
+|3        |Four Rooms (1995)       |1995         |
+|4        |Get Shorty (1995)       |1995         |
+|5        |Dead Man Walking (1995) |1995         |
+|6        |Postino, Il (1994)      |1995         |
+```
+
+- The output for `get_recommendations(users, movies, ratings, full_name='Ryan James',method='by_popularity', year=1995)` would be _'Toy Story (1995)'_.
+- The output for `get_recommendations(users, movies, ratings, full_name='Ryan James',method='by_rating', year=1995)` would be _'GoldenEye (1995)'_.
+- The output for `get_recommendations(users, movies, ratings, full_name='Ryan James',method='by_similar_users', year=1995)` would be _'Postino, Il (1994)'_.
+
+**If you would like to access CSV datasets on your local device you can [download zipped files](https://s3.amazonaws.com/codility-frontend-prod/media/task_static/recommendation_system/static/1615289452/csv_data/csv_files.zip).**
+ before normalizing quotes
+text: For this task, you will deal with ratings given by users to movies (films) that they have seen. A rating is a vote from 1 to 5 based on how much the user liked the movie and recommends it to other users. Create a function `get_recommendations` which will take as arguments three dataframes: a name for the user, the release year, and the recommendation method. The function returns the title of the most highly recommended movie for the given user.
+
+The function `get_recommendations` takes as arguments three dataframes: `users`, `movies` and `ratings`, with the following structure:
+
+- `users` – information about users with the columns: `user id`, `full name`, `age`, `gender` and `zip code`.
+- `ratings` – information about movie ratings by users (only one movie�s rating per user) with the columns: `user id`, `item id`, `rating` and `timestamp`.
+- `movies` – information about movies with the columns: `movie id` (should match `item_id` from `ratings`), `movie title` and `release year`.
+
+The next three arguments are: `full name`, `year` and `method`.
+`Full name` is the full name of the user for whom we want to return one recommended movie whose release year is equal to `year` using one of the three `method`s:
+- By `method=by_popularity` return the movie title with the most ratings.
+- By `method=by_rating` return the movie title with the highest average rating.
+- By `method=by_similar_users` return the movie title with the latest rating (timestamp) among a group of similar users to a given user. A group of similar users are users who have seen at least one movie that the given user has seen. Also, the maximum difference between their rating and the given user�s rating of the same movie is 1 (for every movie they have both seen). You can use function `check_similar_users` or create your own.
+   The `check_similar_users` function returns True if users with ids: `users_id_x`, `user_id_y` are similar based on ratings dataframe and False otherwise.
+
+All methods should return a movie title that has not been rated by the given user.
+
+It can happen that more than one movie meets the condition. For example, several movies have the same highest average rating in `method=by_rating`). In such a case, the function should return the first movie in alphabetical order.
+
+For the cases listed below the function should return an empty string:
+- given `full name` or a `year` does not exist in the given data.
+- incorrect `method` argument.
+- after applying year filtering all movies are already rated by the user.
+- there doesn�t exist any user similar to the user.
+
+### Packages versions
+You can use the following package besides the Python 3.8 standard library:
+- pandas 0.25.3
+
+
+### Examples
+
+For the example dataframes displayed below:
+
+```
+|user id |full name      |age |gender |zip code |
+|--------|---------------|----|-------|---------|
+|1       |Ryan James     |24  |M      |85711    |
+|2       |Alice Graves   |53  |F      |94043    |
+|3       |Ambrose Smith  |23  |M      |32067    |
+|4       |Bobby Alvarez  |24  |M      |90412    |
+|5       |Latosha Jiles  |53  |F      |15343    |
+|6       |Louis Mcmillen |23  |M      |74920    |
+```
+
+```
+|user id |item id |rating |timestamp |
+|--------|--------|-------|----------|
+|2       |1       |1      |881250949 |
+|3       |1       |2      |891717742 |
+|4       |1       |2      |878887116 |
+|5       |1       |3      |894528467 |
+|3       |2       |5      |886397596 |
+|4       |2       |4      |884182806 |
+|1       |3       |2      |881171488 |
+|2       |3       |2      |891628467 |
+|1       |4       |5      |886324817 |
+|2       |4       |3      |883603013 |
+|1       |5       |5      |879372434 |
+|3       |5       |5      |879781125 |
+|3       |4       |4      |876042340 |
+|4       |4       |5      |891035994 |
+|4       |5       |5      |898603000 |
+|2       |5       |5      |904528467 |
+|4       |6       |4      |894528467 |
+```
+
+```
+|movie id |movie title             |release year |
+|---------|------------------------|-------------|
+|1        |Toy Story (1995)        |1995         |
+|2        |GoldenEye (1995)        |1995         |
+|3        |Four Rooms (1995)       |1995         |
+|4        |Get Shorty (1995)       |1995         |
+|5        |Dead Man Walking (1995) |1995         |
+|6        |Postino, Il (1994)      |1995         |
+```
+
+- The output for `get_recommendations(users, movies, ratings, full_name='Ryan James',method='by_popularity', year=1995)` would be _'Toy Story (1995)'_.
+- The output for `get_recommendations(users, movies, ratings, full_name='Ryan James',method='by_rating', year=1995)` would be _'GoldenEye (1995)'_.
+- The output for `get_recommendations(users, movies, ratings, full_name='Ryan James',method='by_similar_users', year=1995)` would be _'Postino, Il (1994)'_.
+
+**If you would like to access CSV datasets on your local device you can [download zipped files](https://s3.amazonaws.com/codility-frontend-prod/media/task_static/recommendation_system/static/1615289452/csv_data/csv_files.zip).**
+ after normalizing quotes
+>------------------
+Find '```[^\n]+?```'
+Replace '```[^\n]+?```' with 'naw'
+>------------------
+Find '(?:`_`)+'
+Replace '(?:`_`)+' with ''
+>------------------
+Find '`(?:POST|GET) /([^`]+)`'
+Replace '`(?:POST|GET) /([^`]+)`' with 'naw \1'
+>------------------
+Find '`(?:mvn|kubectl|javac) [^`]+?`'
+Replace '`(?:mvn|kubectl|javac) [^`]+?`' with 'naw'
+>------------------
+Find '`(?:export|public|private|class) '
+Replace '`(?:export|public|private|class) ' with '`'
+>------------------
+Find '\.[a-z]{2,4}(?!/|\.\w)\b'
+Replace '\.[a-z]{2,4}(?!/|\.\w)\b' with ' naw'
+>------------------
+Find '(\w)[&?](\w)'
+Replace '(\w)[&?](\w)' with '\1  \2'
+>------------------
+Find '`[^`\s]+\.com/[^`\s]+`'
+Replace '`[^`\s]+\.com/[^`\s]+`' with 'naw'
+>------------------
+Find '(\w)=(["']?\w)'
+Replace '(\w)=(["']?\w)' with '\1 = \2'
+>------------------
+Find '\w+\s*=\s*(?:\[.*?\]|"[^"]+")'
+Replace '\w+\s*=\s*(?:\[.*?\]|"[^"]+")' with 'naw'
+>------------------
+Find '!?\[(.*?)\]\(.+?\)'
+Replace '!?\[(.*?)\]\(.+?\)' with '\1 naw'
+>------------------
+Find '\[\[.+?\|(.+?)\]\]'
+Replace '\[\[.+?\|(.+?)\]\]' with 'naw\1'
+>------------------
+Find 'https[^\s)]+'
+Replace 'https[^\s)]+' with 'naw'
+>------------------
+Find '_/([^ ]+)_'
+Replace '_/([^ ]+)_' with '\1'
+>------------------
+Find '\{\{.+?\}\}'
+Replace '\{\{.+?\}\}' with 'naw'
+>------------------
+Find 'com\.codility\.'
+Replace 'com\.codility\.' with 'naw '
+>------------------
+Find '`#include <[^>]+>`'
+Replace '`#include <[^>]+>`' with 'naw'
+>------------------
+Find 'java\.util\.[\w.-]+'
+Replace 'java\.util\.[\w.-]+' with 'naw'
+>>> backticked_text=['`get_recommendations`', '`get_recommendations`', '`users`', '`movies`', '`ratings`', '`users`', '`user id`', '`full name`', '`age`', '`gender`', '`zip code`', '`ratings`', '`user id`', '`item id`', '`rating`', '`timestamp`', '`movies`', '`movie id`', '`item_id`', '`ratings`', '`movie title`', '`release year`', '`full name`', '`year`', '`method`', '`Full name`', '`year`', '`method`', '`method = by_popularity`', '`method = by_rating`', '`method = by_similar_users`', '`check_similar_users`', '`check_similar_users`', '`users_id_x`', '`user_id_y`', '`method = by_rating`', '`full name`', '`year`', '`method`', "`get_recommendations(users, movies, ratings, full_name = 'Ryan James',method = 'by_popularity', year = 1995)`", "`get_recommendations(users, movies, ratings, full_name = 'Ryan James',method = 'by_rating', year = 1995)`", "`get_recommendations(users, movies, ratings, full_name = 'Ryan James',method = 'by_similar_users', year = 1995)`"]
+--------------
+edit_str='`get_recommendations`' before stripping
+edit_str='get recommendations' before filtering
+edit_str='get recommendations' after filtering
+--------------
+edit_str='`get_recommendations`' before stripping
+edit_str='get recommendations' before filtering
+edit_str='get recommendations' after filtering
+--------------
+edit_str='`users`' before stripping
+edit_str='users' before filtering
+edit_str='users' after filtering
+--------------
+edit_str='`movies`' before stripping
+edit_str='movies' before filtering
+edit_str='movies' after filtering
+--------------
+edit_str='`ratings`' before stripping
+edit_str='ratings' before filtering
+edit_str='ratings' after filtering
+--------------
+edit_str='`users`' before stripping
+edit_str='users' before filtering
+edit_str='users' after filtering
+--------------
+edit_str='`user id`' before stripping
+edit_str='user id' before filtering
+edit_str='user id' after filtering
+--------------
+edit_str='`full name`' before stripping
+edit_str='full name' before filtering
+edit_str='full name' after filtering
+--------------
+edit_str='`age`' before stripping
+edit_str='age' before filtering
+edit_str='age' after filtering
+--------------
+edit_str='`gender`' before stripping
+edit_str='gender' before filtering
+edit_str='gender' after filtering
+--------------
+edit_str='`zip code`' before stripping
+edit_str='zip code' before filtering
+edit_str='zip code' after filtering
+--------------
+edit_str='`ratings`' before stripping
+edit_str='ratings' before filtering
+edit_str='ratings' after filtering
+--------------
+edit_str='`user id`' before stripping
+edit_str='user id' before filtering
+edit_str='user id' after filtering
+--------------
+edit_str='`item id`' before stripping
+edit_str='item id' before filtering
+edit_str='item id' after filtering
+--------------
+edit_str='`rating`' before stripping
+edit_str='rating' before filtering
+edit_str='rating' after filtering
+--------------
+edit_str='`timestamp`' before stripping
+edit_str='timestamp' before filtering
+edit_str='timestamp' after filtering
+--------------
+edit_str='`movies`' before stripping
+edit_str='movies' before filtering
+edit_str='movies' after filtering
+--------------
+edit_str='`movie id`' before stripping
+edit_str='movie id' before filtering
+edit_str='movie id' after filtering
+--------------
+edit_str='`item_id`' before stripping
+edit_str='item id' before filtering
+edit_str='item id' after filtering
+--------------
+edit_str='`ratings`' before stripping
+edit_str='ratings' before filtering
+edit_str='ratings' after filtering
+--------------
+edit_str='`movie title`' before stripping
+edit_str='movie title' before filtering
+edit_str='movie title' after filtering
+--------------
+edit_str='`release year`' before stripping
+edit_str='release year' before filtering
+edit_str='release year' after filtering
+--------------
+edit_str='`full name`' before stripping
+edit_str='full name' before filtering
+edit_str='full name' after filtering
+--------------
+edit_str='`year`' before stripping
+edit_str='year' before filtering
+edit_str='year' after filtering
+--------------
+edit_str='`method`' before stripping
+edit_str='method' before filtering
+edit_str='method' after filtering
+--------------
+edit_str='`Full name`' before stripping
+edit_str='Full name' before filtering
+edit_str='Full name' after filtering
+--------------
+edit_str='`year`' before stripping
+edit_str='year' before filtering
+edit_str='year' after filtering
+--------------
+edit_str='`method`' before stripping
+edit_str='method' before filtering
+edit_str='method' after filtering
+--------------
+edit_str='`method = by_popularity`' before stripping
+edit_str='method = by popularity' before filtering
+edit_str='method by popularity' after filtering
+--------------
+edit_str='`method = by_rating`' before stripping
+edit_str='method = by rating' before filtering
+edit_str='method by rating' after filtering
+--------------
+edit_str='`method = by_similar_users`' before stripping
+edit_str='method = by similar users' before filtering
+edit_str='method by similar users' after filtering
+--------------
+edit_str='`check_similar_users`' before stripping
+edit_str='check similar users' before filtering
+edit_str='check similar users' after filtering
+--------------
+edit_str='`check_similar_users`' before stripping
+edit_str='check similar users' before filtering
+edit_str='check similar users' after filtering
+--------------
+edit_str='`users_id_x`' before stripping
+edit_str='users id x' before filtering
+edit_str='users id naw' after filtering
+--------------
+edit_str='`user_id_y`' before stripping
+edit_str='user id y' before filtering
+edit_str='user id y' after filtering
+--------------
+edit_str='`method = by_rating`' before stripping
+edit_str='method = by rating' before filtering
+edit_str='method by rating' after filtering
+--------------
+edit_str='`full name`' before stripping
+edit_str='full name' before filtering
+edit_str='full name' after filtering
+--------------
+edit_str='`year`' before stripping
+edit_str='year' before filtering
+edit_str='year' after filtering
+--------------
+edit_str='`method`' before stripping
+edit_str='method' before filtering
+edit_str='method' after filtering
+--------------
+edit_str="`get_recommendations(users, movies, ratings, full_name = 'Ryan James',method = 'by_popularity', year = 1995)`" before stripping
+edit_str="get recommendations(users, movies, ratings, full name = 'Ryan James',method = 'by popularity', year = 1995)" before filtering
+edit_str='get recommendations users movies ratings full name James method popularity year 1995' after filtering
+--------------
+edit_str="`get_recommendations(users, movies, ratings, full_name = 'Ryan James',method = 'by_rating', year = 1995)`" before stripping
+edit_str="get recommendations(users, movies, ratings, full name = 'Ryan James',method = 'by rating', year = 1995)" before filtering
+edit_str='get recommendations users movies ratings full name James method rating year 1995' after filtering
+--------------
+edit_str="`get_recommendations(users, movies, ratings, full_name = 'Ryan James',method = 'by_similar_users', year = 1995)`" before stripping
+edit_str="get recommendations(users, movies, ratings, full name = 'Ryan James',method = 'by similar users', year = 1995)" before filtering
+edit_str='get recommendations users movies ratings full name James method similar users year 1995' after filtering
+>>> curlbrak_text=[]
+>------------------
+Find '```[a-z]*\n.*?```'
+Replace '```[a-z]*\n.*?```' with 'naw'
+>------------------
+Find '(\{%.+?%\})\n\s+&alt ([^;]+);'
+Replace '(\{%.+?%\})\n\s+&alt ([^;]+);' with '\2\n\1'
+>------------------
+Find '\{%-? (if|filter).+? end\1 %\}'
+Replace '\{%-? (if|filter).+? end\1 %\}' with 'naw'
+>------------------
+Find '\{%-? (?:set).+? %\}'
+Replace '\{%-? (?:set).+? %\}' with ''
+>------------------
+Find '\*\*([^*\n]+)\*\*'
+Replace '\*\*([^*\n]+)\*\*' with '\1'
+>------------------
+Find '\*(\w+)\*'
+Replace '\*(\w+)\*' with '\1'
+>------------------
+Find '\[\[BR\]\]'
+Replace '\[\[BR\]\]' with ''
+>------------------
+Find '\(\((.*?)\)\)'
+Replace '\(\((.*?)\)\)' with '\1'
+>------------------
+Find '(?:Bash|Docker|Maven|Debian|Java|Linux|LinearSVC(\{\})?|DynamoDB|Flask|Python|Android|DataFrame|MySQL|PostgreSQL|LivenessProbe|ReadinessProbe|apiGroup|UNI|docker|CSS|CSS3|HTTP|aiohttp|bash|kubectl|asyncio|python|ISO_8601|ACAX|Angular|express|NodeJS|Kubernetes|JSON|Go|React|PySpark|Lua|GitLab|GoldenEye|RxAndroid|RxJava)\b\s*?(v?\d[\d.]*)?'
+Replace '(?:Bash|Docker|Maven|Debian|Java|Linux|LinearSVC(\{\})?|DynamoDB|Flask|Python|Android|DataFrame|MySQL|PostgreSQL|LivenessProbe|ReadinessProbe|apiGroup|UNI|docker|CSS|CSS3|HTTP|aiohttp|bash|kubectl|asyncio|python|ISO_8601|ACAX|Angular|express|NodeJS|Kubernetes|JSON|Go|React|PySpark|Lua|GitLab|GoldenEye|RxAndroid|RxJava)\b\s*?(v?\d[\d.]*)?' with 'naw'
+>------------------
+Find '\(v[\d.]+\)'
+Replace '\(v[\d.]+\)' with 'naw'
+>------------------
+Find '`(?:method|banner)=[^`]+`'
+Replace '`(?:method|banner)=[^`]+`' with 'naw'
+>------------------
+Find '&lt;GUID&gt;|<GUID>'
+Replace '&lt;GUID&gt;|<GUID>' with ' naw '
+>------------------
+Find '(?<=\W)[A-Z]\[\w\](?=\W|$)'
+Replace '(?<=\W)[A-Z]\[\w\](?=\W|$)' with 'naw'
+>------------------
+Find '^\d[.)]\s+'
+Replace '^\d[.)]\s+' with ''
+### camel_line_vars=[]
+>------------------
+Find '["'`]'
+Replace '["'`]' with ''
+>------------------
+Find '[_/]'
+Replace '[_/]' with ' '
+>------------------
+Find '"'
+Replace '"' with ''
+----
+It took: 0:00:25.842607
